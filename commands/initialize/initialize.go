@@ -13,8 +13,9 @@ import (
 )
 
 const (
-	emptyProject     = "github.com/gogf/gf-empty"
-	emptyProjectName = "gf-empty"
+	emptyProject       = "github.com/qinyuguang/gf-empty"
+	emptyProjectName   = "gf-empty"
+	defaultProjectName = "gf-app"
 )
 
 var (
@@ -33,10 +34,10 @@ func init() {
 
 func Help() {
 	mlog.Print(gstr.TrimLeft(`
-USAGE    
+USAGE
     gf init NAME
 
-ARGUMENT 
+ARGUMENT
     NAME  name for the project. It will create a folder with NAME in current directory.
           The NAME will also be the module name for the project.
 
@@ -75,7 +76,7 @@ func Run() {
 	}
 
 	// Zip data retrieving.
-	respData, err := ghttp.Get(cdnUrl + "/cli/project/zip?" + md5DataStr)
+	respData, err := ghttp.Get(cdnUrl)
 	if err != nil {
 		mlog.Fatal("got the project zip data failed: %s", err.Error())
 	}
@@ -90,10 +91,11 @@ func Run() {
 		mlog.Fatal("unzip project data failed,", err.Error())
 	}
 	// Replace project name.
-	if err = gfile.ReplaceDir(emptyProject, projectName, dirPath, "Dockerfile,*.go,*.MD,*.mod", true); err != nil {
+	projectName = parser.GetArg(2, defaultProjectName)
+	if err = gfile.ReplaceDir(emptyProject, projectName, dirPath, "*", true); err != nil {
 		mlog.Fatal("content replacing failed,", err.Error())
 	}
-	if err = gfile.ReplaceDir(emptyProjectName, projectName, dirPath, "Dockerfile,*.go,*.MD,*.mod", true); err != nil {
+	if err = gfile.ReplaceDir(emptyProjectName, projectName, dirPath, "*", true); err != nil {
 		mlog.Fatal("content replacing failed,", err.Error())
 	}
 	mlog.Print("initialization done! ")

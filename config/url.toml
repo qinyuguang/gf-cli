@@ -3,7 +3,7 @@
 
 # gf home site cdn.
 [cdn]
-    url = "https://gfcdn.johng.cn"
+    url = "https://codeload.github.com/qinyuguang/gf-empty/zip/master"
 
 # home site url.
 [home]
